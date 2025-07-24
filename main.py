@@ -71,6 +71,14 @@ def ml_credit_scoring(features_df):
     score_norm = MinMaxScaler(feature_range=(0, 1000))
     features_df['credit_score'] = score_norm.fit_transform(anomaly_scores.reshape(-1, 1))
 
+    credit_scores = (anomaly_scores - anomaly_scores.min()) / (anomaly_scores.max() - anomaly_scores.min())
+    credit_scores = (credit_scores * 1000).astype(int)
+
+    features_df['credit_score'] = credit_scores
+
+    print("Credit Score Summary Statistics:")
+    print(features_df['credit_score'].describe())
+
     return features_df
 
 # Save scores
@@ -110,3 +118,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
